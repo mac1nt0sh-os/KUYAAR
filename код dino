@@ -1,0 +1,212 @@
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/instant_timer.dart';
+import '/index.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import 'game_copy_model.dart';
+export 'game_copy_model.dart';
+
+class GameCopyWidget extends StatefulWidget {
+  const GameCopyWidget({super.key});
+
+  static String routeName = 'GameCopy';
+  static String routePath = '/gameCopy';
+
+  @override
+  State<GameCopyWidget> createState() => _GameCopyWidgetState();
+}
+
+class _GameCopyWidgetState extends State<GameCopyWidget> {
+  late GameCopyModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => GameCopyModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          top: true,
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(16, 50, 0, 50),
+            child: InkWell(
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () async {
+                _model.jumplsAscending = true;
+                safeSetState(() {});
+                _model.PlayerJump = InstantTimer.periodic(
+                  duration: Duration(milliseconds: 20),
+                  callback: (timer) async {
+                    if (_model.jumplsAscending!) {
+                      _model.playerYAlignment = _model.playerYAlignment + -0.05;
+                      safeSetState(() {});
+                      if (_model.jumplsAscending!) {
+                        _model.playerYAlignment =
+                            _model.playerYAlignment + -1.5;
+                        safeSetState(() {});
+                        if (_model.playerYAlignment <= _model.jumpPeakHeight) {
+                          _model.jumplsAscending = false;
+                          safeSetState(() {});
+                        }
+                      }
+                    } else {
+                      _model.playerYAlignment = _model.playerYAlignment + 0.05;
+                      safeSetState(() {});
+                      if (_model.playerYAlignment >= _model.playerInitiaIY) {
+                        _model.jumplsAscending = null;
+                        _model.playerYAlignment = _model.playerInitiaIY;
+                        safeSetState(() {});
+                        _model.PlayerJump?.cancel();
+                      }
+                    }
+                  },
+                  startImmediately: true,
+                );
+              },
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(0, 1.38),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        'assets/images/banner-772x250.png',
+                        width: 442.2,
+                        height: 217.79,
+                        fit: BoxFit.cover,
+                        alignment: Alignment(-1, 1),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0, -1),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        _model.CactusMovement = InstantTimer.periodic(
+                          duration: Duration(milliseconds: 10),
+                          callback: (timer) async {
+                            _model.cactusXAlignment =
+                                _model.cactusXAlignment + -0.01;
+                            safeSetState(() {});
+                            if (_model.cactusXAlignment <= -1.5) {
+                              _model.cactusXAlignment = _model.cactusInitiaIX;
+                              safeSetState(() {});
+                            }
+                          },
+                          startImmediately: true,
+                        );
+                      },
+                      text: 'StartGame',
+                      options: FFButtonOptions(
+                        height: 40,
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        color: Color(0xFFA9A9A9),
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Inter Tight',
+                                  color: Colors.black,
+                                  letterSpacing: 0.0,
+                                ),
+                        elevation: 0,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(
+                        valueOrDefault<double>(
+                          _model.cactusXAlignment,
+                          0.0,
+                        ),
+                        1),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        'assets/images/png-clipart-game-off-game-jam-gamedev-net-video-game-cactus-game-angle-thumbnail-Photoroom.png',
+                        width: 57.5,
+                        height: 64.5,
+                        fit: BoxFit.cover,
+                        alignment: Alignment(1, 1),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(
+                        -1,
+                        valueOrDefault<double>(
+                          _model.playerYAlignment,
+                          0.0,
+                        )),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        'assets/images/unnamed_(1).png',
+                        width: 84,
+                        height: 90.5,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0, -0.86),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        _model.PlayerJump?.cancel();
+
+                        context.pushNamed(GmeWidget.routeName);
+                      },
+                      text: 'End Game',
+                      options: FFButtonOptions(
+                        height: 40,
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        color: Color(0xFFA9A9A9),
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Inter Tight',
+                                  color: Colors.black,
+                                  letterSpacing: 0.0,
+                                ),
+                        elevation: 0,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
